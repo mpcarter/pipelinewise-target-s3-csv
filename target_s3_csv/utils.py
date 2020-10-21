@@ -173,3 +173,23 @@ def add_file_count(filename, counter=0):
     root, ext = os.path.splitext(filename)
     return root + f'-{counter:03}' + ext
 
+
+def decimal_default(obj):
+    if isinstance(obj, Decimal):
+        x = str(obj)
+    return x
+
+
+def process_record(d, sep='__'):
+    """
+    """
+    items = {}
+    for k in sorted(d.keys()):
+        v = d[k]
+        if isinstance(v, collections.MutableMapping):
+            items[k] = json.dumps(v, default=decimal_default)
+        else:
+            items[k] = v
+    return items
+
+
